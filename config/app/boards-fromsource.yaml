@@ -98,7 +98,7 @@ objects:
             value: ${DATABASE_SERVICE_NAME}
           - name: MONGODB_SERVICE_PORT
             value: '27017'
-          image: ${APPLICATION_NAME}
+          image: quay.io/oballest/ossm-boards:latest
           imagePullPolicy: Always
           name: ${APPLICATION_NAME}
           ports:
@@ -123,57 +123,6 @@ objects:
           name: ${APPLICATION_NAME}:latest
       type: ImageChange
     - type: ConfigChange
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-      version: ${APP_VERSION_TAG}
-    name: ${APPLICATION_NAME}
-  spec:
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: ${APPLICATION_NAME}:latest
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: code/boards
-      git:
-        ref: ${GIT_BRANCH}
-        uri: ${GIT_URI}
-      type: Git
-    strategy:
-      sourceStrategy:
-        from:
-          kind: ImageStreamTag
-          name: 'nodejs:${NODEJS_VERSION_TAG}'
-          namespace: openshift
-      type: Source
-    triggers:
-    - generic:
-        secret: 1ee531e8754cceaa
-      type: Generic
-    - github:
-        secret: e7d3062bfd0f73e4
-      type: GitHub
-    - imageChange:
-      type: ImageChange
-    - type: ConfigChange
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-      version: ${APP_VERSION_TAG}
-    name: ${APPLICATION_NAME}
-  spec:
-    lookupPolicy:
-      local: false
 # -----------------------------------------------------------------------------
 # MongoDB Section
 # -----------------------------------------------------------------------------

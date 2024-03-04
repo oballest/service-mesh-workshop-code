@@ -57,7 +57,7 @@ items:
                 name: userprofile-postgresql
           - name: POSTGRESQL_SERVICE_PORT
             value: "5432"
-          image: %USER_PROFILE_IMAGE_URI%:1.0
+          image: quay.io/oballest/ossm-userprofile:1.0
           imagePullPolicy: Always
           name: userprofile
           ports:

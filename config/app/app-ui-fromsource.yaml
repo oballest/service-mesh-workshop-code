@@ -74,7 +74,7 @@ objects:
             value: auth-sso73-x509
           - name: SSO_SVC_HOST
             value: '8443'
-          image: ${APPLICATION_NAME}
+          image: uay.io/oballest/ossm-app-ui:latest
           imagePullPolicy: Always
           name: ${APPLICATION_NAME}
           ports:
@@ -90,66 +90,7 @@ objects:
         terminationGracePeriodSeconds: 30
     test: false
     triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${APPLICATION_NAME}
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
-      type: ImageChange
     - type: ConfigChange
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-      version: ${APP_VERSION_TAG}
-    name: ${APPLICATION_NAME}
-  spec:
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: ${APPLICATION_NAME}:latest
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: code/app-ui
-      git:
-        ref: ${GIT_BRANCH}
-        uri: ${GIT_URI}
-      type: Git
-    strategy:
-      sourceStrategy:
-        from:
-          kind: ImageStreamTag
-          name: 'nodejs:${NODEJS_VERSION_TAG}'
-          namespace: openshift
-      type: Source
-    triggers:
-    - generic:
-        secret: 1ee531e8754cceaa
-      type: Generic
-    - github:
-        secret: e7d3062bfd0f73e4
-      type: GitHub
-    - imageChange:
-      type: ImageChange
-    - type: ConfigChange
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-      version: ${APP_VERSION_TAG}
-    name: ${APPLICATION_NAME}
-  spec:
-    lookupPolicy:
-      local: false
 parameters:
 - description: The name for the application.
   displayName: Application Name

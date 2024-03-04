@@ -9,9 +9,13 @@ spec:
   - hosts:
     - '*'
     port:
-      number: 80
-      name: http
-      protocol: HTTP
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: router-ingress-secret
+    
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

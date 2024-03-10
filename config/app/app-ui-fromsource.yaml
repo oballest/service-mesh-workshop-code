@@ -74,7 +74,7 @@ objects:
             value: auth-sso73-x509
           - name: SSO_SVC_HOST
             value: '8443'
-          image: uay.io/oballest/ossm-app-ui:latest
+          image: quay.io/oballest/ossm-app-ui:latest
           imagePullPolicy: Always
           name: ${APPLICATION_NAME}
           ports:
